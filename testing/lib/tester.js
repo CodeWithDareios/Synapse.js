@@ -64,6 +64,7 @@ export const Unit = (unitName ,...tests) => {
     let fails = [];
  
     const outprint = [
+        `\n`,
         `Test Results for Unit ${unitName}:\n`
     ];
     
