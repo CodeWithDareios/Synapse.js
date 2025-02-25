@@ -1,3 +1,5 @@
+import { generateFragmentID } from "./$_utils.js";
+
 //@ts-nocheck
 /**
  * Type definitions
@@ -6,6 +8,8 @@
  * @typedef {Array} $_children
  * @typedef {String} $_text
  * @typedef {Object} $node
+ * @typedef {'beginning' | 'ending'} fragmentBookmarkType
+ * @typedef {Object} info$node
  */
 
 /**
@@ -40,11 +44,20 @@ export const ELEMENT_NODE = (type, attributes = {}, ...children) => {
         }),
         type: type,
         attributes: attributes,
-        children: [] //@type {any[]}
+        children: [...children] 
     };
-    children.forEach(child => {
-        if (typeof child === 'string') result.children.push(TEXT_NODE(child));
-        else if (child.$.is_$) result.children.push(child);
-    });
+
+}
+
+export const FRAGMENT_NODE = (id = 'none', ...children) => {
+    
+    return {
+        $: Object.freeze({
+            $node_type: 'fragment',
+            is_$: true,
+            $ID: id == 'none' ? generateFragmentID() : id
+        }),
+        contains: [...children]
+    }
 
 }
