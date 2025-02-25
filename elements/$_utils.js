@@ -1,7 +1,7 @@
 
 /**
  * Type definitions
- * @typedef {number|bigint} randomFragmentID 
+ * @typedef {string} randomFragmentID 
  */
 
 
@@ -11,6 +11,6 @@
  */
 export const generateFragmentID = () => {
 
-    return ((Math.random() * 100) * Math.random()) * Math.pow(10, Math.random().toString().length)
+    return (((Math.random() * 100) * Math.random()) * Math.pow(10, Math.random().toString().length)).toString()
 
 }

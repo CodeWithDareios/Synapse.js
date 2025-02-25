@@ -1,6 +1,7 @@
+//@ts-nocheck
+
 import { generateFragmentID } from "./$_utils.js";
 
-//@ts-nocheck
 /**
  * Type definitions
  * @typedef {String} $_type
@@ -8,8 +9,8 @@ import { generateFragmentID } from "./$_utils.js";
  * @typedef {Array} $_children
  * @typedef {String} $_text
  * @typedef {Object} $node
- * @typedef {'beginning' | 'ending'} fragmentBookmarkType
  * @typedef {Object} info$node
+ * @typedef {string} fragmentID 
  */
 
 /**
@@ -44,20 +45,36 @@ export const ELEMENT_NODE = (type, attributes = {}, ...children) => {
         }),
         type: type,
         attributes: attributes,
-        children: [...children] 
+        children: [] 
     };
+    children.forEach(child => {
+        if (typeof child == 'string') result.children.push(TEXT_NODE(child));
+        else result.children.push(child);
+    });
+    return result;
 
 }
 
+/**
+ * 
+ * @param {fragmentID} id 
+ * @param  {...any} children 
+ * @returns 
+ */
 export const FRAGMENT_NODE = (id = 'none', ...children) => {
     
-    return {
+    const result = {
         $: Object.freeze({
             $node_type: 'fragment',
             is_$: true,
             $ID: id == 'none' ? generateFragmentID() : id
         }),
-        contains: [...children]
-    }
+        contains: []
+    };
+    children.forEach(child => {
+        if (typeof child == 'string') result.children.push(TEXT_NODE(child));
+        else result.children.push(child);
+    });
+    return result;
 
 }
