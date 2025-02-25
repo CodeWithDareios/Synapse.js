@@ -21,10 +21,29 @@
  */
 export const Test = (input, expected) => {
 
+    let result = false;
+    let continues = true;
+
+    if (!result && Object.is(input, expected)) result = true;
+    if (!result && continues && (typeof input !== "object" || typeof expected !== "object" || typeof input === null || typeof expected === null)) continues = false;
+
+    if (continues && !result && (Array.isArray(input) !== Array.isArray(expected))) continues = false;
+
+    if (continues && !result) {
+        const keysA = Reflect.ownKeys(input);
+        const keysB = Reflect.ownKeys(expected);
+
+        if (continues && !result && (keysA.length !== keysB.length)) {
+            result = false;
+        } else {
+            result = (keysA.every(key => Test(input[key], expected[key]).PASSED))
+        }
+    }
+
     return Object.freeze({
-        DISPLAY: `Result: ${(input == expected) ? 'passed✅' : 'failed❌'}`,
+        DISPLAY: `Result: ${(result) ? 'passed✅' : 'failed❌'}`,
         RESULT: input,
-        PASSED: (input == expected),
+        PASSED: result,
         EXPECTED: expected
     });
 
@@ -45,8 +64,7 @@ export const Unit = (unitName ,...tests) => {
     let fails = [];
  
     const outprint = [
-        `Test Results for Unit ${unitName}:`,
-        '\n'
+        `Test Results for Unit ${unitName}:\n`
     ];
     
     for (let i = 0; i < testingResults.length; i++) {
@@ -57,7 +75,7 @@ export const Unit = (unitName ,...tests) => {
     }
     const failedPercentage = Math.floor(((100 / tests.length) * failedCount) * 100) / 100;
     
-    outprint.push('\n');
+    outprint.push(' ');
     outprint.push(`Unit test: ${passed ? 'passed✅' : 'failed❌'}. Success rate: ${100 - failedPercentage}%`)
     outprint.forEach(text => {console.log(text)});
 
@@ -66,8 +84,10 @@ export const Unit = (unitName ,...tests) => {
         console.log(`Failures:\n`)
         for (let i = 0; i < fails.length; i++) {
             console.log(`Test No. ${fails[i] + 1}: `)
-            console.log(`   Expected: ${testingResults[fails[i]].EXPECTED},`);
-            console.log(`   Recieved: ${testingResults[fails[i]].RESULT},`)
+            console.log(`   Expected: `);
+            console.log(testingResults[fails[i]].EXPECTED);
+            console.log(`   Recieved: `);
+            console.log(testingResults[fails[i]].RESULT)
         }
     }
 
