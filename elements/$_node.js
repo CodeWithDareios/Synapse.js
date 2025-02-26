@@ -49,6 +49,7 @@ export const ELEMENT_NODE = (type, attributes = {}, ...children) => {
     };
     children.forEach(child => {
         if (typeof child == 'string') result.children.push(TEXT_NODE(child));
+        else if (Array.isArray(child)) result.children.push(FRAGMENT_NODE('test',...child))
         else result.children.push(child);
     });
     return result;
@@ -61,7 +62,9 @@ export const ELEMENT_NODE = (type, attributes = {}, ...children) => {
  * @param  {...any} children 
  * @returns 
  */
-export const FRAGMENT_NODE = (id = 'none', ...children) => {
+export const FRAGMENT_NODE = (ID = 'none', ...children) => {
+
+    const id = ID;
     
     const result = {
         $: Object.freeze({
@@ -72,8 +75,8 @@ export const FRAGMENT_NODE = (id = 'none', ...children) => {
         contains: []
     };
     children.forEach(child => {
-        if (typeof child == 'string') result.children.push(TEXT_NODE(child));
-        else result.children.push(child);
+        if (typeof child == 'string') result.contains.push(TEXT_NODE(child));
+        else result.contains.push(child);
     });
     return result;
 
