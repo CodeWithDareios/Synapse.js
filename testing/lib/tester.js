@@ -77,7 +77,7 @@ export const Unit = (unitName ,...tests) => {
     const failedPercentage = Math.floor(((100 / tests.length) * failedCount) * 100) / 100;
     
     outprint.push(' ');
-    outprint.push(`Unit test: ${passed ? 'passed✅' : 'failed❌'}. Success rate: ${100 - failedPercentage}%`)
+    outprint.push(`Unit test: ${passed ? 'passed✅' : 'failed❌'}. Success rate: ${100 - failedPercentage}%\n`)
     outprint.forEach(text => {console.log(text)});
 
     if (!passed) {
