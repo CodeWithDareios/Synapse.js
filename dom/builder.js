@@ -35,8 +35,6 @@ const DOM_Builder = (dom, info = {}) => {
     if (Array.isArray(dom)) holder = FRAGMENT_NODE(info.name || 'none',dom);
     else holder = dom;
 
-    // TODO: in the handlers incorporate attribute handler (when it is ready)
-    // * Focus on resolving fragment id system
     if (holder.$.is_$) {
 
         switch(holder.$.$node_type) {
@@ -45,6 +43,9 @@ const DOM_Builder = (dom, info = {}) => {
                 break;
             case 'fragment':
                 buildFragment(holder);
+                break;
+            case 'text':
+                buildText(holder);
                 break;
             default:
                 throw new Error(`There was an error in the building process`);

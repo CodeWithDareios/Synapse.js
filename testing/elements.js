@@ -45,7 +45,6 @@ export const elements = () => Unit('Element Function Building',
                 $: Object.freeze({
                     $node_type: 'fragment',
                     is_$: true,
-                    $ID: 'test'
                 }),
                 contains: []
             }]
@@ -62,7 +61,6 @@ export const elements = () => Unit('Element Function Building',
             $: Object.freeze({
                 $node_type: 'fragment',
                 is_$: true,
-                $ID: 'test'
             }),
             contains: [
                 {
@@ -87,7 +85,6 @@ export const elements = () => Unit('Element Function Building',
             $: Object.freeze({
                 $node_type: 'fragment',
                 is_$: true,
-                $ID: 'test'
             }),
             contains: [
                 {
