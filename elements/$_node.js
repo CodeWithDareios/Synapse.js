@@ -1,4 +1,5 @@
 //@ts-nocheck
+import $DOM from "../dom/$dom.js";
 
 /**
  * Type definitions
@@ -8,7 +9,6 @@
  * @typedef {String} $_text
  * @typedef {Object} $node
  * @typedef {Object} info$node
- * @typedef {string} fragmentID 
  */
 
 /**
@@ -45,19 +45,18 @@ export const ELEMENT_NODE = (type, attributes = {}, ...children) => {
         attributes: attributes,
         children: [] 
     };
-    // TODO: account for fragment id handeling when finished 
     children.forEach(child => {
         if (typeof child == 'string') result.children.push(TEXT_NODE(child));
         else if (Array.isArray(child)) result.children.push(FRAGMENT_NODE(...child))
-        else result.children.push(child);
+        else if (child.$.is_$ || child.verify()) result.children.push(child);
+        else throw new Error(`incompatible input type`);
     });
     return result;
 
 }
 
 /**
- * 
- * @param {fragmentID} id 
+ *  
  * @param  {...any} children 
  * @returns 
  */
@@ -73,7 +72,8 @@ export const FRAGMENT_NODE = (...children) => {
     children.forEach(child => {
         if (typeof child == 'string') result.contains.push(TEXT_NODE(child));
         else if (Array.isArray(child)) result.contains.push(FRAGMENT_NODE(...child))
-        else result.contains.push(child);
+        else if (child.$.is_$ || child.verify()) result.contains.push(child);
+        else throw new Error(`incompatible input type`);
     });
     return result;
 
